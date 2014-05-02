@@ -1,4 +1,4 @@
-php-integration
+PHP Integration
 ===============
 
-Integrate your own projects with new PHP versions
+Integrate your own projects with new PHP versions.
