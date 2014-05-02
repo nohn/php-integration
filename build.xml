@@ -10,6 +10,9 @@
     <condition property="cloneexists">
       <available file="sources/php-src" type="dir"/>
     </condition>
+    <condition property="makefileexists">
+      <available file="sources/php-src/Makefile" type="file"/>
+    </condition>
   </target>
   <target name="clone" depends="init, check" unless="cloneexists">
     <exec dir="sources" executable="git" failonerror="true">
@@ -26,7 +29,7 @@
       <arg line="checkout ${branch}"/>
     </exec>
   </target>
-  <target name="clean">
+  <target name="clean" if="makefileexists">
     <exec dir="sources/php-src" executable="make" failonerror="true">
       <arg line="clean"/>
     </exec>
