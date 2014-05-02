@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <project name="php-integration" default="integrate" basedir=".">
   <property name="branch" value="master"/>
+  <property name="build-flags" value="--with-openssl"/>
   <target name="init">
     <mkdir dir="sources"/>
     <mkdir dir="deliv"/>
@@ -40,7 +41,7 @@
   </target>
   <target name="configure" depends="buildconf">
     <exec dir="sources/php-src" executable="./configure" failonerror="true">
-      <arg line="--prefix=${basedir}/deliv/"/>
+      <arg line="--prefix=${basedir}/deliv/ ${build-flags}"/>
     </exec>
   </target>
   <target name="build" depends="configure">
