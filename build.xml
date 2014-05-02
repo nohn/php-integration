@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<project name="php-integration" default="integrate" basedir=".">
+  <property name="branch" value="master"/>
+  <target name="init">
+    <mkdir dir="sources"/>
+    <mkdir dir="deliv"/>
+    <mkdir dir="projects"/>
+  </target>
+  <target name="check">
+    <condition property="cloneexists">
+      <available file="sources/php-src" type="dir"/>
+    </condition>
+  </target>
+  <target name="clone" depends="init, check" unless="cloneexists">
+    <exec dir="sources" executable="git" failonerror="true">
+      <arg line="clone https://github.com/php/php-src.git "/>
+    </exec>
+  </target>
+  <target name="pull" depends="init, check" if="cloneexists">
+    <exec dir="sources/php-src" executable="git" failonerror="true">
+      <arg line="pull"/>
+    </exec>
+  </target>
+  <target name="checkout" depends="clone, pull">
+    <exec dir="sources/php-src" executable="git" failonerror="true">
+      <arg line="checkout ${branch}"/>
+    </exec>
+  </target>
+  <target name="clean">
+    <exec dir="sources/php-src" executable="make" failonerror="true">
+      <arg line="clean"/>
+    </exec>
+  </target>
+  <target name="buildconf" depends="checkout">
+    <exec dir="sources/php-src" executable="./buildconf" failonerror="true">
+    </exec>
+  </target>
+  <target name="configure" depends="buildconf">
+    <exec dir="sources/php-src" executable="./configure" failonerror="true">
+      <arg line="--prefix=${basedir}/deliv/"/>
+    </exec>
+  </target>
+  <target name="build" depends="configure">
+    <exec dir="sources/php-src" executable="make" failonerror="true">
+      <arg line="-j 4"/>
+    </exec>
+  </target>
+  <target name="dist" depends="clean, checkout, build">
+    <exec dir="sources/php-src" executable="make" failonerror="true">
+      <arg line="install"/>
+    </exec>
+  </target>
+  <target name="test" depends="dist">
+    <exec dir="sources/php-src" executable="make" failonerror="true">
+      <arg line="test"/>
+    </exec>
+  </target>
+  <target name="integrate" depends="test">
+    <ant antfile="projects.xml"/>
+  </target>
+</project>
