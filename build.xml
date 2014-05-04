@@ -2,6 +2,7 @@
 <project name="php-integration" default="integrate" basedir=".">
   <property name="branch" value="master"/>
   <property name="build-flags" value="--with-openssl"/>
+  <property name="timezone" value="Europe/Berlin"/>
   <target name="init">
     <mkdir dir="sources"/>
     <mkdir dir="deliv"/>
@@ -53,6 +54,7 @@
     <exec dir="sources/php-src" executable="make" failonerror="true">
       <arg line="install"/>
     </exec>
+    <echo file="deliv/bin/php.ini" append="false">date.timezone=${timezone}</echo>
   </target>
   <target name="test" depends="dist">
     <exec dir="sources/php-src" executable="make" failonerror="true">
