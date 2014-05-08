@@ -31,7 +31,7 @@
       <arg line="checkout ${branch}"/>
     </exec>
   </target>
-  <target name="clean" if="makefileexists">
+  <target name="clean" depends="check" if="makefileexists">
     <exec dir="sources/php-src" executable="make" failonerror="true">
       <arg line="clean"/>
     </exec>
