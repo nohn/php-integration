@@ -33,7 +33,7 @@
   </target>
   <target name="clean" depends="check" if="makefileexists">
     <exec dir="sources/php-src" executable="make" failonerror="true">
-      <arg line="clean"/>
+      <arg line="clean distclean"/>
     </exec>
   </target>
   <target name="buildconf" depends="checkout">
